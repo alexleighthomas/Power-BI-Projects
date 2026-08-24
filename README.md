@@ -29,9 +29,6 @@ These steps ensured the dataset was fully prepared for modelling and analysis. <
 
 <h3> ✔️ Data Modelling & Semantic Layer </h3>
 
-<img width="533" height="273" alt="image" src="https://github.com/user-attachments/assets/19e5ab76-a126-4e93-abbe-541d31446045" />
-
-
 <p1> 
 
 - Built star‑schema models with fact and dimension tables
@@ -44,13 +41,11 @@ These steps ensured the dataset was fully prepared for modelling and analysis. <
 
 - Set up model properties such as formatting, summarisation, and data categories </p1>
 
+<img width="533" height="273" alt="image" src="https://github.com/user-attachments/assets/19e5ab76-a126-4e93-abbe-541d31446045" />
+
+<p2> This diagram shows the star‑schema data model used in Power BI, with clearly defined fact and dimension tables. It highlights how relationships were created between tables such as Sales, Product, Region, Reseller, and Salesperson to support efficient reporting. Hierarchies, formatting, and semantic properties were configured to ensure clean, reliable analytics and smooth interaction across visuals and DAX measures. </p2> 
 
 <h3> ✔️ DAX Calculated Columns & Measures </h3>
-
-<img width="686" height="287" alt="image" src="https://github.com/user-attachments/assets/c3f7f230-54d0-436c-9c02-dcb1c62b841d" />
-
-
-
 <p1>  
 Developed DAX expressions to support deeper analysis, including:
 - Calculated Columns
@@ -74,10 +69,53 @@ Developed DAX expressions to support deeper analysis, including:
 
 These measures enabled dynamic, interactive reporting across multiple visuals. </p1>
 
+<h4> 📐 DAX Measures for Regional Sales Percentages </h4>
+<p1> These DAX measures calculate sales percentages at different geographic levels: Region, Country, and Group. They use DIVIDE(), CALCULATE(), and REMOVEFILTERS() to control context, and ISINSCOPE() to ensure correct behaviour inside hierarchical visuals such as matrices. </p1>
+
+<img width="686" height="287" alt="image" src="https://github.com/user-attachments/assets/c3f7f230-54d0-436c-9c02-dcb1c62b841d" />
+
+<h4> 1. Sales % All Region
+Percentage of total sales across all regions, ignoring the Region filter. </h4>
+<p2> Sales % All Region =
+DIVIDE(
+    SUM(Sales[Sales]),
+    CALCULATE(
+        SUM(Sales[Sales]),
+        REMOVEFILTERS(Region)
+    )
+)
+</p2> 
+
+<h4> 2. Sales % Country
+Percentage of total sales for the country, ignoring the Region level. With ISINSCOPE() for correct matrix behaviour: </h4>
+<p2> Sales % Country =
+IF(
+    ISINSCOPE(Region[Region]),
+    DIVIDE(
+        SUM(Sales[Sales]),
+        CALCULATE(
+            SUM(Sales[Sales]),
+            REMOVEFILTERS(Region[Region])
+        )
+    )
+) </p2>
+
+<h4> 3. Sales % Group
+Percentage of total sales for the group, ignoring both Region and Country filters. With ISINSCOPE() for hierarchical accuracy: </h4>
+
+<p2> Sales % Group =
+IF(
+    ISINSCOPE(Region[Region]) || ISINSCOPE(Region[Country]),
+    DIVIDE(
+        SUM(Sales[Sales]),
+        CALCULATE(
+            SUM(Sales[Sales]),
+            REMOVEFILTERS(Region[Region], Region[Country])
+        )
+    )
+) </p2>
+
 <h3> ✔️ Interactive Report Design </h3>
-
-<img width="533" height="273" alt="image" src="https://github.com/user-attachments/assets/96ae568d-d4c1-4a3a-937c-8d09724e598a" />
-
 
 <p1> 
 Built multi‑page Power BI reports featuring:
@@ -114,8 +152,6 @@ A wide range of visuals were used to tell a clear data story:
 
 <h2> 📈 Retail & Sales Data Storytelling </h2>
 
-<img width="678" height="353" alt="image" src="https://github.com/user-attachments/assets/f328554c-44f1-4961-a1e2-6ecafcf00ec1" />
-
 <p1> 
 The project focused heavily on retail and sales datasets, using Power BI to uncover:
 
@@ -140,6 +176,10 @@ Through interactive dashboards, stakeholders can explore:
 - Where to focus marketing or operational improvements
 
 This demonstrates my ability to turn raw data into meaningful business insights. </p1>
+
+<img width="678" height="353" alt="image" src="https://github.com/user-attachments/assets/f328554c-44f1-4961-a1e2-6ecafcf00ec1" />
+
+<p2> This dashboard presents key retail and sales insights using Power BI, including monthly sales and profit margin trends, product‑level performance, and category‑level quantities sold. Interactive filters allow users to explore results by year and region, while the visuals highlight high‑performing products, seasonal patterns, and regional differences in customer behaviour. It demonstrates how Power BI can turn raw sales data into clear, actionable business insights. </p2>
 
 <h2> 🚀 Tools & Platforms Used </h2>
 
